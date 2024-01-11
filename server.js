@@ -2,7 +2,7 @@ const http = require('node:http');
 const fs = require('fs')
 
 const hostname = '127.0.0.1';
-const port = 4047;
+const port = 4026;
 const dataGenerator = require('./js/dataGenerator.js')
 const dataArray = dataGenerator()
 fs.writeFile('data.txt', JSON.stringify(dataArray), (err) => {
@@ -14,8 +14,10 @@ fs.writeFile('data.txt', JSON.stringify(dataArray), (err) => {
 })
 
 const server = http.createServer((req, res) => {
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/plain');
+  res.writeHead(200, {
+    'Content-Type': 'text/plain',
+    'Access-Control-Allow-Origin' : '*'
+  });
   
   const url = req.url;
   
@@ -25,7 +27,7 @@ const server = http.createServer((req, res) => {
     res.end()
   }
   else {
-    res.end('Wrong Url\n try photo')
+    res.end('Wrong Url\n try /photo')
   }
 
 });
